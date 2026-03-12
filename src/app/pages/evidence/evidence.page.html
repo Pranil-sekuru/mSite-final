@@ -1,0 +1,93 @@
+<ion-header class="page-header">
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+    <ion-title>Clinical Evidence</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="evidence-hero">
+    <span class="gradient-badge">Research Outcomes</span>
+    <h1>Clinical Evidence</h1>
+    <p>Objective, sensor-measured outcomes from the mSITE pilot study.</p>
+  </div>
+
+  <!-- Key Stats -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-card class="stat-card">
+          <div class="stat-value">77%</div>
+          <div class="stat-label">EMA Adherence Rate</div>
+        </ion-card>
+      </ion-col>
+      <ion-col size="6">
+        <ion-card class="stat-card">
+          <div class="stat-value">46%</div>
+          <div class="stat-label">Context-Aware EMAs</div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Charts -->
+  <h2 class="section-title">Participant A — Trends Over 8 Weeks</h2>
+  <p class="section-subtitle">Passive sensing data reveals measurable improvements in social behavior.</p>
+
+  <ion-card class="chart-card">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="trending-up-outline" color="secondary"></ion-icon>
+        Trending Up
+      </ion-card-subtitle>
+      <ion-card-title>Conversations Per Week</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="chart-container">
+        <canvas #conversationsChart></canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="chart-card">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="trending-down-outline" color="primary"></ion-icon>
+        Trending Down
+      </ion-card-subtitle>
+      <ion-card-title>Time at Home Per Day</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="chart-container">
+        <canvas #homeTimeChart></canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Case Studies -->
+  <h2 class="section-title">Case Studies</h2>
+
+  <ion-segment [(ngModel)]="selectedCase" mode="ios">
+    <ion-segment-button value="a">
+      <ion-label>Participant A</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="b">
+      <ion-label>Participant B</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-card class="case-study-card" *ngIf="currentCase">
+    <ion-card-header>
+      <ion-card-title>{{ currentCase.title }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="case-summary">{{ currentCase.summary }}</p>
+      <ion-list lines="none">
+        <ion-item *ngFor="let detail of currentCase.details">
+          <ion-icon name="checkmark-circle-outline" slot="start" color="secondary"></ion-icon>
+          <ion-label class="ion-text-wrap">{{ detail }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

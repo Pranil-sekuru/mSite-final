@@ -1,13 +1,9 @@
 /*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
+ * mSITE Global CSS
  */
+
+/* Google Fonts - Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
@@ -18,20 +14,178 @@
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
 
-/* Optional CSS utils that can be commented out */
+/* Optional CSS utils */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+/* =============================================
+   mSITE Custom Global Styles
+   ============================================= */
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+// Side menu styling
+ion-menu {
+  --width: 280px;
+
+  ion-header {
+    ion-toolbar {
+      --background: linear-gradient(135deg, #2E4A8E 0%, #1D9E75 100%);
+      --color: #ffffff;
+      padding: 20px 16px 12px;
+    }
+  }
+
+  .menu-logo-section {
+    padding: 24px 20px;
+    background: linear-gradient(135deg, #2E4A8E 0%, #1D9E75 100%);
+    color: white;
+
+    h2 {
+      margin: 0 0 4px;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 12px;
+      opacity: 0.85;
+      font-weight: 400;
+    }
+  }
+
+  ion-content {
+    --background: #ffffff;
+  }
+
+  ion-list {
+    padding: 8px 0;
+
+    ion-item {
+      --padding-start: 20px;
+      --min-height: 48px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      --color: #333;
+      letter-spacing: 0.01em;
+      transition: background-color 0.2s ease;
+
+      ion-icon {
+        font-size: 20px;
+        margin-right: 14px;
+        color: #2E4A8E;
+      }
+
+      &.selected {
+        --background: rgba(46, 74, 142, 0.08);
+        --color: #2E4A8E;
+        font-weight: 600;
+
+        ion-icon {
+          color: #1D9E75;
+        }
+      }
+    }
+  }
+}
+
+// Page header consistency
+.page-header {
+  ion-toolbar {
+    --background: #2E4A8E;
+    --color: #ffffff;
+  }
+}
+
+// Card styling
+ion-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  margin: 12px;
+
+  ion-card-header {
+    padding-bottom: 8px;
+  }
+
+  ion-card-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: #2E4A8E;
+  }
+
+  ion-card-subtitle {
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+}
+
+// Stat card
+.stat-card {
+  text-align: center;
+  padding: 20px 16px;
+
+  .stat-value {
+    font-size: 36px;
+    font-weight: 800;
+    color: #1D9E75;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+}
+
+// Section divider
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2E4A8E;
+  margin: 24px 16px 8px;
+  letter-spacing: -0.3px;
+}
+
+.section-subtitle {
+  font-size: 15px;
+  color: #666;
+  margin: 0 16px 16px;
+  line-height: 1.5;
+}
+
+// Gradient badge
+.gradient-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #2E4A8E 0%, #1D9E75 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+// Smooth page transitions
+ion-content {
+  --background: #FAFAFA;
+}
+
+// Responsive grid adjustments
+@media (min-width: 768px) {
+  ion-card {
+    margin: 16px;
+  }
+}

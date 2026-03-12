@@ -1,0 +1,58 @@
+<ion-header class="page-header">
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+    <ion-title>Team</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="team-hero">
+    <span class="gradient-badge">Research Team</span>
+    <h1>Meet the Team</h1>
+    <p>Researchers from Dartmouth College and UC San Diego driving the mSITE project.</p>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" size-md="3" *ngFor="let member of team">
+        <ion-card class="team-card">
+          <ion-card-content>
+            <div class="member-avatar" [style.background]="member.color">
+              <ion-icon [name]="member.icon"></ion-icon>
+            </div>
+            <h3 class="member-name">{{ member.name }}</h3>
+            <p class="member-role">{{ member.role }}</p>
+            <ion-badge color="light" class="member-affiliation">{{ member.affiliation }}</ion-badge>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card class="collab-card">
+    <ion-card-header>
+      <ion-card-title>Collaborative Research</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>The mSITE project bridges two world-class institutions:</p>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6">
+            <div class="institution">
+              <ion-icon name="school-outline" color="primary"></ion-icon>
+              <strong>Dartmouth College</strong>
+              <p>Pervasive Computing & Mobile Sensing</p>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="institution">
+              <ion-icon name="medkit-outline" color="secondary"></ion-icon>
+              <strong>UC San Diego</strong>
+              <p>Clinical Psychology & Psychiatry</p>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

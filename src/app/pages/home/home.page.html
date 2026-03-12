@@ -1,0 +1,90 @@
+<ion-header class="page-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>mSITE</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-overlay">
+      <div class="hero-content">
+        <span class="gradient-badge">IEEE Pervasive Computing 2024</span>
+        <h1 class="hero-title">Social connection,<br>exactly when it matters</h1>
+        <p class="hero-subtitle">A context-aware mobile intervention for social isolation in serious mental illness</p>
+        <ion-button routerLink="/how-it-works" shape="round" size="large" class="hero-cta">
+          Discover How It Works
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="section-title">Pervasive Computing Meets Mental Health</div>
+  <p class="section-subtitle">mSITE uses passive sensing and context-aware triggers to deliver personalized CBT interventions at the moment of need.</p>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" size-md="3" *ngFor="let stat of stats">
+        <ion-card class="stat-card">
+          <div class="stat-value">{{ stat.value }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Feature Cards -->
+  <ion-card class="feature-card">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="analytics-outline"></ion-icon> Passive Sensing
+      </ion-card-subtitle>
+      <ion-card-title>No Self-Report Required</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      The system detects social isolation using conversation sensors, GPS, accelerometers, and phone usage — without requiring any active input from the user.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="feature-card">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="notifications-outline"></ion-icon> Context-Aware Triggers
+      </ion-card-subtitle>
+      <ion-card-title>Right Time, Right Place</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      When the system detects you're alone and away from home, it fires a personalized CBT-based intervention prompt — not on a schedule, but when it matters.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="feature-card">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="medkit-outline"></ion-icon> Therapist-in-the-Loop
+      </ion-card-subtitle>
+      <ion-card-title>Blended Intervention Model</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Clinicians personalize challenge messages during in-person sessions. An 8-week blended model combines face-to-face therapy with continuous mobile support.
+    </ion-card-content>
+  </ion-card>
+
+  <!-- CTA Section -->
+  <div class="bottom-cta">
+    <ion-card class="cta-card">
+      <ion-card-content>
+        <h2>Funded by NIMH</h2>
+        <p>Grant 5R61MH126094 — targeting 50 participants with SMI ages 18–65</p>
+        <ion-button routerLink="/evidence" expand="block" fill="outline" shape="round">
+          View Clinical Evidence
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

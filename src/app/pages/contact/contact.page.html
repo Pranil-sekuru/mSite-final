@@ -1,0 +1,114 @@
+<ion-header class="page-header">
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+    <ion-title>Contact</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="contact-hero">
+    <span class="gradient-badge">Get in Touch</span>
+    <h1>Contact & Collaborate</h1>
+    <p>Interested in our research? Clinicians, researchers, and collaborators are welcome to reach out.</p>
+  </div>
+
+  <ion-card class="contact-card" *ngIf="!submitted">
+    <ion-card-header>
+      <ion-card-title>Send Us a Message</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-input
+            label="Full Name"
+            labelPlacement="floating"
+            [(ngModel)]="formData.name"
+            placeholder="Enter your name"
+            type="text"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            label="Email Address"
+            labelPlacement="floating"
+            [(ngModel)]="formData.email"
+            placeholder="Enter your email"
+            type="email"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-select
+            label="I am a..."
+            labelPlacement="floating"
+            [(ngModel)]="formData.role"
+            interface="popover"
+          >
+            <ion-select-option value="clinician">Clinician</ion-select-option>
+            <ion-select-option value="researcher">Researcher</ion-select-option>
+            <ion-select-option value="student">Student</ion-select-option>
+            <ion-select-option value="industry">Industry Professional</ion-select-option>
+            <ion-select-option value="other">Other</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-textarea
+            label="Message"
+            labelPlacement="floating"
+            [(ngModel)]="formData.message"
+            placeholder="Tell us about your interest in mSITE..."
+            rows="5"
+            autoGrow
+          ></ion-textarea>
+        </ion-item>
+      </ion-list>
+
+      <ion-button
+        expand="block"
+        shape="round"
+        color="primary"
+        class="submit-btn"
+        (click)="submitForm()"
+        [disabled]="!formData.name || !formData.email || !formData.message"
+      >
+        Send Message
+        <ion-icon name="send-outline" slot="end"></ion-icon>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Success State -->
+  <ion-card class="success-card" *ngIf="submitted">
+    <ion-card-content>
+      <div class="success-icon">
+        <ion-icon name="checkmark-circle-outline" color="secondary"></ion-icon>
+      </div>
+      <h2>Message Sent!</h2>
+      <p>Thank you for your interest in mSITE. We'll get back to you soon.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Contact Info -->
+  <ion-card class="info-card">
+    <ion-card-header>
+      <ion-card-title>Research Institutions</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-icon name="school-outline" slot="start" color="primary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <h3>Dartmouth College</h3>
+            <p>Department of Computer Science — Pervasive Computing</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="medkit-outline" slot="start" color="secondary"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <h3>UC San Diego</h3>
+            <p>Department of Psychiatry — Clinical Psychology</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

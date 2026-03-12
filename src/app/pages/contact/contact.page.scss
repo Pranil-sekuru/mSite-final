@@ -1,0 +1,68 @@
+.contact-hero {
+  background: linear-gradient(135deg, #2E4A8E 0%, #1D9E75 100%);
+  padding: 36px 24px;
+  color: white;
+
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 12px 0 8px;
+  }
+
+  p {
+    font-size: 14px;
+    opacity: 0.88;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+.contact-card {
+  ion-item {
+    --padding-start: 0;
+    margin-bottom: 8px;
+  }
+
+  .submit-btn {
+    margin-top: 20px;
+    text-transform: none;
+    font-weight: 600;
+    --border-radius: 30px;
+  }
+}
+
+.success-card {
+  text-align: center;
+  padding: 32px 16px;
+
+  .success-icon {
+    ion-icon {
+      font-size: 56px;
+    }
+  }
+
+  h2 {
+    color: #1D9E75;
+    font-weight: 700;
+    margin: 12px 0 8px;
+  }
+
+  p {
+    color: #666;
+    font-size: 14px;
+  }
+}
+
+.info-card {
+  h3 {
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+  }
+
+  p {
+    font-size: 13px;
+    color: #888;
+    margin: 0;
+  }
+}

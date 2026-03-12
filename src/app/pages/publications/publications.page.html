@@ -1,0 +1,85 @@
+<ion-header class="page-header">
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+    <ion-title>Publications</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="pub-hero">
+    <span class="gradient-badge">Academic References</span>
+    <h1>Publications</h1>
+    <p>Peer-reviewed research and preprint resources for the mSITE system.</p>
+  </div>
+
+  <!-- Primary Publication -->
+  <ion-card class="citation-card">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="star-outline" color="warning"></ion-icon>
+        Primary Publication
+      </ion-card-subtitle>
+      <ion-card-title>Social Isolation and Serious Mental Illness</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="citation-text">
+        Nepal, S., Pillai, A., Parrish, E.M., Holden, J., Depp, C., Campbell, A.T., &amp; Granholm, E. (2024).
+        <em>Social Isolation and Serious Mental Illness: The Role of Context-Aware Mobile Interventions.</em>
+        IEEE Pervasive Computing, 23(1), 46–56.
+      </p>
+
+      <ion-list lines="none" class="link-list">
+        <ion-item *ngFor="let link of links" [href]="link.url" target="_blank" detail>
+          <ion-icon [name]="link.icon" slot="start" color="primary"></ion-icon>
+          <ion-label>{{ link.label }}</ion-label>
+          <ion-icon name="open-outline" slot="end" color="medium"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Funding -->
+  <ion-card class="funding-pub-card">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="cash-outline" color="secondary"></ion-icon>
+        Funding
+      </ion-card-subtitle>
+      <ion-card-title>NIMH Grant</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>This research is supported by the National Institute of Mental Health (NIMH).</p>
+      <ion-chip color="primary" outline>
+        <ion-icon name="ribbon-outline"></ion-icon>
+        <ion-label>Grant: 5R61MH126094</ion-label>
+      </ion-chip>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- How to Cite -->
+  <ion-card class="cite-card">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="copy-outline" color="tertiary"></ion-icon>
+        How to Cite
+      </ion-card-subtitle>
+      <ion-card-title>BibTeX</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="bibtex-block">
+        <code>
+&#64;article&#123;nepal2024msite,<br>
+&nbsp;&nbsp;title=&#123;Social Isolation and Serious Mental Illness: The Role of Context-Aware Mobile Interventions&#125;,<br>
+&nbsp;&nbsp;author=&#123;Nepal, Subigya and Pillai, Arvind and Parrish, Emma M. and Holden, Jason and Depp, Colin and Campbell, Andrew T. and Granholm, Eric&#125;,<br>
+&nbsp;&nbsp;journal=&#123;IEEE Pervasive Computing&#125;,<br>
+&nbsp;&nbsp;volume=&#123;23&#125;,<br>
+&nbsp;&nbsp;number=&#123;1&#125;,<br>
+&nbsp;&nbsp;pages=&#123;46--56&#125;,<br>
+&nbsp;&nbsp;year=&#123;2024&#125;,<br>
+&nbsp;&nbsp;doi=&#123;10.1109/MPRV.2024.3377200&#125;<br>
+&#125;
+        </code>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

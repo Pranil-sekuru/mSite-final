@@ -1,0 +1,96 @@
+.pub-hero {
+  background: linear-gradient(135deg, #2E4A8E 0%, #1D9E75 100%);
+  padding: 36px 24px;
+  color: white;
+
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 12px 0 8px;
+  }
+
+  p {
+    font-size: 14px;
+    opacity: 0.88;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+.citation-card {
+  ion-card-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .citation-text {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #444;
+    margin-bottom: 16px;
+
+    em {
+      color: #2E4A8E;
+      font-weight: 500;
+    }
+  }
+}
+
+.link-list {
+  ion-item {
+    --min-height: 44px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #333;
+  }
+}
+
+.funding-pub-card {
+  ion-card-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+}
+
+.cite-card {
+  ion-card-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .bibtex-block {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+
+    code {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #333;
+    }
+  }
+}

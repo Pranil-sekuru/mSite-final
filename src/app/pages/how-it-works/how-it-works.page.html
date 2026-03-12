@@ -1,0 +1,74 @@
+<ion-header class="page-header">
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+    <ion-title>How It Works</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="arch-hero">
+    <span class="gradient-badge">System Architecture</span>
+    <h1>5-Layer Architecture</h1>
+    <p>Tap each layer to explore the components that power mSITE's context-aware intervention system.</p>
+  </div>
+
+  <!-- Layer Selector -->
+  <div class="layer-selector">
+    <div
+      *ngFor="let layer of layers; let i = index"
+      class="layer-pill"
+      [class.active]="selectedLayer === layer.id"
+      [style.--pill-color]="layer.color"
+      (click)="selectLayer(layer.id)"
+    >
+      <div class="pill-number">{{ i + 1 }}</div>
+      <div class="pill-label">{{ layer.title }}</div>
+    </div>
+  </div>
+
+  <!-- Layer Detail -->
+  <div class="layer-detail" *ngIf="currentLayer">
+    <ion-card class="layer-card" [style.--layer-accent]="currentLayer.color">
+      <ion-card-header>
+        <div class="layer-header-row">
+          <div class="layer-icon-circle" [style.background]="currentLayer.color">
+            <ion-icon [name]="currentLayer.icon"></ion-icon>
+          </div>
+          <div>
+            <ion-card-subtitle>{{ currentLayer.subtitle }}</ion-card-subtitle>
+            <ion-card-title>{{ currentLayer.title }}</ion-card-title>
+          </div>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <p class="layer-description">{{ currentLayer.description }}</p>
+
+        <ion-list lines="none" class="component-list">
+          <ion-item *ngFor="let comp of currentLayer.components">
+            <ion-icon [name]="comp.icon" slot="start" [style.color]="currentLayer.color"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              <h3>{{ comp.name }}</h3>
+              <p>{{ comp.description }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Flow Diagram -->
+  <div class="flow-section">
+    <h2 class="section-title">Data Flow</h2>
+    <div class="flow-diagram">
+      <div *ngFor="let layer of layers; let last = last" class="flow-step">
+        <div class="flow-node" [style.border-color]="layer.color">
+          <ion-icon [name]="layer.icon" [style.color]="layer.color"></ion-icon>
+          <span>{{ layer.title }}</span>
+        </div>
+        <div class="flow-arrow" *ngIf="!last">
+          <ion-icon name="arrow-down-outline"></ion-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,3 +1,26 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu contentId="main-content" menuId="main-menu" type="overlay">
+    <div class="menu-logo-section">
+      <h2>mSITE</h2>
+      <p>Mobile Social Interaction Therapy by Exposure</p>
+    </div>
+    <ion-content>
+      <ion-list lines="none">
+        <ion-item
+          *ngFor="let page of pages"
+          [routerLink]="page.url"
+          routerLinkActive="selected"
+          [routerLinkActiveOptions]="{exact: page.url === '/home'}"
+          (click)="closeMenu()"
+          detail="false"
+          button
+        >
+          <ion-icon [name]="page.icon" slot="start"></ion-icon>
+          <ion-label>{{ page.title }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="main-content"></ion-router-outlet>
 </ion-app>

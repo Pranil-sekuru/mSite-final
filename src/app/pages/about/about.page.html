@@ -1,0 +1,120 @@
+<ion-header class="page-header">
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+    <ion-title>About mSITE</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="about-hero">
+    <span class="gradient-badge">Research Overview</span>
+    <h1>About mSITE</h1>
+    <p>Mobile Social Interaction Therapy by Exposure — a pervasive computing system for addressing social isolation in serious mental illness.</p>
+  </div>
+
+  <ion-accordion-group [multiple]="true" [value]="['problem','innovation','approach']">
+    <ion-accordion value="problem">
+      <ion-item slot="header" color="light">
+        <ion-icon name="alert-circle-outline" slot="start" color="danger"></ion-icon>
+        <ion-label><strong>The Problem</strong></ion-label>
+      </ion-item>
+      <div slot="content" class="accordion-content">
+        <p>Serious Mental Illness (SMI) — including schizophrenia, schizoaffective disorder, and bipolar I with psychosis — affects millions worldwide. A defining feature of SMI is <strong>social isolation</strong>, which worsens negative symptoms and dramatically reduces quality of life.</p>
+        <p>Existing interventions suffer from poor timing: they're delivered during scheduled clinic visits or at random times, missing the real moments when isolation occurs. There is no way for clinicians to know <em>when</em> a patient is alone and struggling.</p>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="innovation">
+      <ion-item slot="header" color="light">
+        <ion-icon name="bulb-outline" slot="start" color="warning"></ion-icon>
+        <ion-label><strong>The Innovation</strong></ion-label>
+      </ion-item>
+      <div slot="content" class="accordion-content">
+        <p>mSITE is the <strong>first context-aware intervention targeting social outcomes in SMI</strong>. Rather than relying on self-report or scheduled reminders, a passive sensing pipeline detects when a participant is:</p>
+        <ion-list lines="none" class="innovation-list">
+          <ion-item>
+            <ion-icon name="location-outline" slot="start" color="primary"></ion-icon>
+            <ion-label class="ion-text-wrap">Away from home (GPS geofencing)</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="person-outline" slot="start" color="primary"></ion-icon>
+            <ion-label class="ion-text-wrap">Alone — low conversation count detected by microphone</ion-label>
+          </ion-item>
+        </ion-list>
+        <p>When both conditions are met, the system fires a personalized EMA (Ecological Momentary Assessment) prompt using CBT principles, with therapist-authored messages embedded.</p>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="approach">
+      <ion-item slot="header" color="light">
+        <ion-icon name="git-merge-outline" slot="start" color="secondary"></ion-icon>
+        <ion-label><strong>Blended Approach</strong></ion-label>
+      </ion-item>
+      <div slot="content" class="accordion-content">
+        <p>mSITE combines two therapeutic modalities:</p>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-card class="approach-card">
+                <ion-card-header>
+                  <ion-card-subtitle>Weeks 1–4</ion-card-subtitle>
+                  <ion-card-title>In-Person CBT</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  Face-to-face cognitive-behavioral therapy sessions where clinicians personalize challenge messages for defeatist and threat beliefs.
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-card class="approach-card">
+                <ion-card-header>
+                  <ion-card-subtitle>Weeks 5–8</ion-card-subtitle>
+                  <ion-card-title>Remote + Mobile CBT</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  Remote coaching sessions combined with continuous context-aware mobile interventions triggered by the sensing pipeline.
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-accordion>
+
+    <ion-accordion value="funding">
+      <ion-item slot="header" color="light">
+        <ion-icon name="ribbon-outline" slot="start" color="tertiary"></ion-icon>
+        <ion-label><strong>Funding & Publication</strong></ion-label>
+      </ion-item>
+      <div slot="content" class="accordion-content">
+        <ion-card class="funding-card">
+          <ion-card-content>
+            <ion-list lines="none">
+              <ion-item>
+                <ion-icon name="school-outline" slot="start" color="primary"></ion-icon>
+                <ion-label class="ion-text-wrap">
+                  <h3>Publication</h3>
+                  <p>Nepal et al., IEEE Pervasive Computing, 2024</p>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-icon name="cash-outline" slot="start" color="secondary"></ion-icon>
+                <ion-label class="ion-text-wrap">
+                  <h3>NIMH Grant</h3>
+                  <p>5R61MH126094</p>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-icon name="people-outline" slot="start" color="tertiary"></ion-icon>
+                <ion-label class="ion-text-wrap">
+                  <h3>Target Participants</h3>
+                  <p>50 individuals with SMI, ages 18–65</p>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+</ion-content>
