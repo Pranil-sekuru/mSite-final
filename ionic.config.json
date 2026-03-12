@@ -1,0 +1,7 @@
+{
+  "name": "msite-web",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
