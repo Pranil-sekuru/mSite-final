@@ -1,4 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { SensorService } from '../../services/sensor.service';
+import { IsolationDetectorService } from '../../services/isolation-detector.service';
+import {
+  LocationReading,
+  ConversationReading,
+  IsolationState
+} from '../../models/sensor.models';
 
 interface EmaStep {
   title: string;
@@ -15,9 +23,18 @@ interface EmaStep {
   styleUrls: ['./the-app.page.scss'],
   standalone: false,
 })
-export class TheAppPage {
+export class TheAppPage implements OnInit, OnDestroy {
   showSimulator = false;
   currentStep = 0;
+  liveMode = false;
+
+  // Live sensor data
+  liveLocation: LocationReading | null = null;
+  liveConversation: ConversationReading | null = null;
+  liveIsolation: IsolationState | null = null;
+  isSensing = false;
+
+  private subs: Subscription[] = [];
 
   emaSteps: EmaStep[] = [
     {
@@ -60,12 +77,49 @@ export class TheAppPage {
     },
   ];
 
+  constructor(
+    private sensorService: SensorService,
+    private isolationDetector: IsolationDetectorService
+  ) {}
+
+  ngOnInit() {
+    this.subs.push(
+      this.sensorService.sensingActive$.subscribe(active => this.isSensing = active),
+      this.sensorService.location$.subscribe(loc => {
+        this.liveLocation = loc;
+        this.updateLiveSensorStep();
+      }),
+      this.sensorService.conversation$.subscribe(conv => {
+        this.liveConversation = conv;
+        this.updateLiveSensorStep();
+      }),
+      this.isolationDetector.isolationState$.subscribe(state => {
+        this.liveIsolation = state;
+        this.updateLiveSensorStep();
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(s => s.unsubscribe());
+  }
+
   get progress(): number {
     return (this.currentStep + 1) / this.emaSteps.length;
   }
 
   get step(): EmaStep {
     return this.emaSteps[this.currentStep];
+  }
+
+  toggleLiveMode() {
+    this.liveMode = !this.liveMode;
+    if (this.liveMode) {
+      this.updateLiveSensorStep();
+    } else {
+      // Reset to default prompt
+      this.emaSteps[0].prompt = 'Detected: You are away from home and alone (low conversation count this morning).';
+    }
   }
 
   openSimulator() {
@@ -90,5 +144,19 @@ export class TheAppPage {
     if (this.currentStep > 0) {
       this.currentStep--;
     }
+  }
+
+  private updateLiveSensorStep() {
+    if (!this.liveMode || !this.isSensing) return;
+
+    const loc = this.liveLocation;
+    const conv = this.liveConversation;
+    const iso = this.liveIsolation;
+
+    let locationStr = loc ? (loc.isAtHome ? '🏠 At Home' : '🚶 Away from home') : 'Acquiring GPS…';
+    let convStr = conv ? `${conv.conversationCount} conversation(s) detected today` : 'Listening…';
+    let isoStr = iso ? `Isolation score: ${(iso.isolationScore * 100).toFixed(0)}%` : '';
+
+    this.emaSteps[0].prompt = `📡 Live Data:\n${locationStr}\n${convStr}\n${isoStr}`;
   }
 }

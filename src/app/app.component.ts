@@ -13,6 +13,7 @@ export class AppComponent {
     { title: 'About mSITE', url: '/about', icon: 'information-circle-outline' },
     { title: 'How It Works', url: '/how-it-works', icon: 'layers-outline' },
     { title: 'The App', url: '/the-app', icon: 'phone-portrait-outline' },
+    { title: 'Sensor Dashboard', url: '/sensor-dashboard', icon: 'pulse-outline' },
     { title: 'Clinical Evidence', url: '/evidence', icon: 'bar-chart-outline' },
     { title: 'Team', url: '/team', icon: 'people-outline' },
     { title: 'Publications', url: '/publications', icon: 'document-text-outline' },

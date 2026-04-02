@@ -1,5 +1,7 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { DataStorageService } from '../../services/data-storage.service';
+import { SensorType, ConversationReading } from '../../models/sensor.models';
 
 Chart.register(...registerables);
 
@@ -9,11 +11,13 @@ Chart.register(...registerables);
   styleUrls: ['./evidence.page.scss'],
   standalone: false,
 })
-export class EvidencePage implements AfterViewInit {
+export class EvidencePage implements AfterViewInit, OnInit {
   @ViewChild('conversationsChart') conversationsCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('homeTimeChart') homeTimeCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('deviceConvChart') deviceConvCanvas!: ElementRef<HTMLCanvasElement>;
 
   selectedCase = 'a';
+  hasDeviceData = false;
 
   caseStudies: Record<string, { title: string; summary: string; details: string[] }> = {
     a: {
@@ -38,14 +42,23 @@ export class EvidencePage implements AfterViewInit {
     }
   };
 
+  constructor(private storage: DataStorageService) {}
+
   get currentCase() {
     return this.caseStudies[this.selectedCase];
+  }
+
+  async ngOnInit() {
+    // Check if we have any device sensor data
+    const todayConvs = await this.storage.getTodaySensorReadings(SensorType.CONVERSATION);
+    this.hasDeviceData = todayConvs.length > 0;
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.createConversationsChart();
       this.createHomeTimeChart();
+      this.loadDeviceChart();
     }, 300);
   }
 
@@ -138,5 +151,71 @@ export class EvidencePage implements AfterViewInit {
         }
       }
     });
+  }
+
+  async loadDeviceChart() {
+    const todayConvs = await this.storage.getTodaySensorReadings(SensorType.CONVERSATION);
+    if (todayConvs.length === 0) return;
+
+    this.hasDeviceData = true;
+
+    // Wait for the *ngIf to render the canvas
+    setTimeout(() => {
+      const ctx = this.deviceConvCanvas?.nativeElement;
+      if (!ctx) return;
+
+      // Group by hour and pick the max conversation count per hour
+      const hourlyData: number[] = new Array(24).fill(0);
+      for (const reading of todayConvs as ConversationReading[]) {
+        const hour = new Date(reading.timestamp).getHours();
+        hourlyData[hour] = Math.max(hourlyData[hour], reading.conversationCount);
+      }
+
+      const currentHour = new Date().getHours();
+      const labels = [];
+      const data = [];
+      for (let h = 0; h <= currentHour; h++) {
+        labels.push(`${h}:00`);
+        data.push(hourlyData[h]);
+      }
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Cumulative Conversations',
+            data,
+            backgroundColor: 'rgba(139, 92, 246, 0.6)',
+            borderColor: '#8B5CF6',
+            borderWidth: 2,
+            borderRadius: 6,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#8B5CF6',
+              titleFont: { family: 'Inter' },
+              bodyFont: { family: 'Inter' },
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: 'Conversations', font: { family: 'Inter', weight: 'bold' } },
+              grid: { color: 'rgba(0,0,0,0.04)' }
+            },
+            x: {
+              grid: { display: false },
+              title: { display: true, text: 'Hour', font: { family: 'Inter', weight: 'bold' } }
+            }
+          }
+        }
+      });
+    }, 200);
   }
 }

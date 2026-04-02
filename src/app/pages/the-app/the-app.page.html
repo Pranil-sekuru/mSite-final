@@ -12,6 +12,22 @@
     <p>Experience how the context-aware EMA flow works — from sensor detection to savoring prompt.</p>
   </div>
 
+  <!-- Live Mode Toggle -->
+  <ion-card class="live-mode-card" [class.active]="liveMode">
+    <ion-card-content>
+      <div class="live-mode-row">
+        <div class="live-mode-info">
+          <ion-icon [name]="liveMode ? 'pulse-outline' : 'analytics-outline'" [color]="liveMode ? 'success' : 'medium'"></ion-icon>
+          <div>
+            <strong>{{ liveMode ? 'Live Sensor Mode' : 'Demo Mode' }}</strong>
+            <p>{{ liveMode ? (isSensing ? 'Using real sensor data' : 'Start sensing on Dashboard first') : 'Demo mode — start sensing to use live data' }}</p>
+          </div>
+        </div>
+        <ion-toggle [(ngModel)]="liveMode" (ionChange)="toggleLiveMode()" color="success"></ion-toggle>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
   <!-- Launch Simulator Button -->
   <div class="simulator-launch">
     <ion-card class="launch-card" (click)="openSimulator()">
@@ -20,7 +36,7 @@
           <ion-icon name="play-circle-outline"></ion-icon>
         </div>
         <h2>Try the EMA Flow Simulator</h2>
-        <p>Step through a simulated 5-step intervention as experienced by mSITE participants</p>
+        <p>Step through the 5-step EMA intervention flow as experienced by mSITE participants</p>
         <ion-button shape="round" color="secondary">
           Launch Simulator
           <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>

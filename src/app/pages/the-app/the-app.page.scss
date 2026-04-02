@@ -17,6 +17,43 @@
   }
 }
 
+.live-mode-card {
+  border-radius: 14px !important;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+
+  &.active {
+    border-color: rgba(29, 158, 117, 0.3);
+  }
+
+  .live-mode-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .live-mode-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    ion-icon {
+      font-size: 28px;
+    }
+
+    strong {
+      font-size: 14px;
+      color: #333;
+    }
+
+    p {
+      margin: 0;
+      font-size: 11px;
+      color: #999;
+    }
+  }
+}
+
 .simulator-launch {
   padding: 0 4px;
 }

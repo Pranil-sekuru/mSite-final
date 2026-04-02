@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">mSITE</string>
+    <string name="title_activity_main">mSITE</string>
+    <string name="package_name">com.msite.mobilesensing</string>
+    <string name="custom_url_scheme">com.msite.mobilesensing</string>
+</resources>

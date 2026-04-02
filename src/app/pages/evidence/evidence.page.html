@@ -64,6 +64,35 @@
     </ion-card-content>
   </ion-card>
 
+  <!-- Your Sensor Data -->
+  <h2 class="section-title">Your Sensor Data</h2>
+  <p class="section-subtitle">Live data collected from your device sensors.</p>
+
+  <ion-card class="chart-card" *ngIf="hasDeviceData">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="pulse-outline" color="tertiary"></ion-icon>
+        Device Data
+      </ion-card-subtitle>
+      <ion-card-title>Today's Conversations</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="chart-container">
+        <canvas #deviceConvChart></canvas>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="!hasDeviceData" class="no-data-card">
+    <ion-card-content>
+      <div class="no-data-content">
+        <ion-icon name="analytics-outline" color="medium"></ion-icon>
+        <h3>No Device Data Yet</h3>
+        <p>Start the sensors from the <a routerLink="/sensor-dashboard">Sensor Dashboard</a> to begin collecting data from your device.</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
   <!-- Case Studies -->
   <h2 class="section-title">Case Studies</h2>
 

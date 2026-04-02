@@ -1,0 +1,292 @@
+<ion-header class="page-header">
+  <ion-toolbar>
+    <ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
+    <ion-title>Sensor Dashboard</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleSensing()" [color]="isSensing ? 'danger' : 'success'" fill="solid" shape="round" class="sensing-toggle-btn">
+        <ion-icon [name]="isSensing ? 'stop-circle-outline' : 'play-circle-outline'" slot="start"></ion-icon>
+        {{ isSensing ? 'Stop' : 'Start' }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Hero Section -->
+  <div class="dashboard-hero">
+    <span class="gradient-badge">Live Sensing</span>
+    <h1>Mobile Sensing Pipeline</h1>
+    <p>Real-time sensor data collection and context-aware isolation detection.</p>
+    <div class="sensing-status-indicator" [class.active]="isSensing">
+      <div class="pulse-dot"></div>
+      <span>{{ isSensing ? 'Sensors Active' : 'Sensors Inactive' }}</span>
+    </div>
+  </div>
+
+  <!-- Isolation State Banner -->
+  <ion-card class="isolation-card" *ngIf="isolation && isSensing">
+    <ion-card-content>
+      <div class="isolation-row">
+        <div class="isolation-indicator" [style.background]="getIsolationColor()">
+          <ion-icon name="shield-outline"></ion-icon>
+        </div>
+        <div class="isolation-info">
+          <h3>Isolation Score: {{ isolation.isolationScore | number:'1.0-2' }}</h3>
+          <p>{{ getIsolationLabel() }} · {{ isolation.isHome ? 'At Home' : 'Away' }} · {{ isolation.isAlone ? 'Alone' : 'Social Contact' }}</p>
+        </div>
+        <div class="isolation-score-ring" [style.--score-color]="getIsolationColor()">
+          <span>{{ (isolation.isolationScore * 100) | number:'1.0-0' }}%</span>
+        </div>
+      </div>
+      <div class="isolation-details">
+        <ion-chip outline>
+          <ion-icon name="chatbubbles-outline"></ion-icon>
+          <ion-label>{{ isolation.conversationCountToday }} convos today</ion-label>
+        </ion-chip>
+        <ion-chip outline>
+          <ion-icon name="time-outline"></ion-icon>
+          <ion-label>{{ isolation.lastConversationMinutesAgo >= 0 ? isolation.lastConversationMinutesAgo + 'min ago' : 'No convos yet' }}</ion-label>
+        </ion-chip>
+        <ion-chip outline *ngIf="isolation.triggerEma" color="warning">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          <ion-label>EMA Triggered</ion-label>
+        </ion-chip>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Sensor Status Cards -->
+  <h2 class="section-title">Sensor Channels</h2>
+
+  <div class="sensor-grid">
+    <!-- Location -->
+    <ion-card class="sensor-card">
+      <ion-card-content>
+        <div class="sensor-header">
+          <div class="sensor-icon-wrap" style="--sensor-accent: #3B8BD4">
+            <ion-icon name="location-outline"></ion-icon>
+          </div>
+          <div class="sensor-status-dot" [style.background]="getStatusColor(SensorType.LOCATION)"></div>
+        </div>
+        <h3>Location</h3>
+        <p class="sensor-status-text">{{ getStatusLabel(SensorType.LOCATION) }}</p>
+        <div class="sensor-data" *ngIf="location">
+          <div class="data-row">
+            <span class="data-label">Position</span>
+            <span class="data-value">{{ location.latitude | number:'1.4-4' }}, {{ location.longitude | number:'1.4-4' }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Accuracy</span>
+            <span class="data-value">{{ location.accuracy | number:'1.0-0' }}m</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">At Home</span>
+            <span class="data-value" [class.home]="location.isAtHome" [class.away]="!location.isAtHome">
+              {{ location.isAtHome ? '🏠 Yes' : '🚶 No' }}
+            </span>
+          </div>
+        </div>
+        <div class="sensor-empty" *ngIf="!location">
+          <ion-icon name="navigate-outline"></ion-icon>
+          <span>Waiting for GPS…</span>
+        </div>
+        <ion-button *ngIf="location" size="small" fill="clear" (click)="setCurrentAsHome()">
+          <ion-icon name="home-outline" slot="start"></ion-icon>
+          Set as Home
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Activity -->
+    <ion-card class="sensor-card">
+      <ion-card-content>
+        <div class="sensor-header">
+          <div class="sensor-icon-wrap" style="--sensor-accent: #1D9E75">
+            <ion-icon name="walk-outline"></ion-icon>
+          </div>
+          <div class="sensor-status-dot" [style.background]="getStatusColor(SensorType.ACTIVITY)"></div>
+        </div>
+        <h3>Activity</h3>
+        <p class="sensor-status-text">{{ getStatusLabel(SensorType.ACTIVITY) }}</p>
+        <div class="sensor-data" *ngIf="activity">
+          <div class="data-row">
+            <span class="data-label">Steps</span>
+            <span class="data-value highlight">{{ activity.steps }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Moving</span>
+            <span class="data-value">{{ activity.isMoving ? '🏃 Yes' : '🪑 No' }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Intensity</span>
+            <span class="data-value">{{ activity.intensity }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Accel</span>
+            <span class="data-value">{{ activity.accelerationMagnitude }}m/s²</span>
+          </div>
+        </div>
+        <!-- Mini sparkline bar chart -->
+        <div class="mini-chart" *ngIf="activityHistory.length > 0">
+          <div class="bar" *ngFor="let val of activityHistory"
+            [style.height.%]="(val / 15) * 100"
+            [style.background]="val > 8 ? '#EF4444' : val > 3 ? '#E8A838' : '#1D9E75'">
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Conversation -->
+    <ion-card class="sensor-card">
+      <ion-card-content>
+        <div class="sensor-header">
+          <div class="sensor-icon-wrap" style="--sensor-accent: #E8A838">
+            <ion-icon name="mic-outline"></ion-icon>
+          </div>
+          <div class="sensor-status-dot" [style.background]="getStatusColor(SensorType.CONVERSATION)"></div>
+        </div>
+        <h3>Conversation</h3>
+        <p class="sensor-status-text">{{ getStatusLabel(SensorType.CONVERSATION) }}</p>
+        <div class="sensor-data" *ngIf="conversation">
+          <div class="data-row">
+            <span class="data-label">Detected</span>
+            <span class="data-value" [class.yes]="conversation.conversationDetected" [class.no]="!conversation.conversationDetected">
+              {{ conversation.conversationDetected ? '🗣️ Yes' : '🤫 No' }}
+            </span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Count Today</span>
+            <span class="data-value highlight">{{ conversation.conversationCount }}</span>
+          </div>
+          <div class="data-row" *ngIf="conversation.conversationDetected">
+            <span class="data-label">Duration</span>
+            <span class="data-value">~{{ conversation.estimatedDurationMinutes }}min</span>
+          </div>
+        </div>
+
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Phone Usage -->
+    <ion-card class="sensor-card">
+      <ion-card-content>
+        <div class="sensor-header">
+          <div class="sensor-icon-wrap" style="--sensor-accent: #8B5CF6">
+            <ion-icon name="phone-portrait-outline"></ion-icon>
+          </div>
+          <div class="sensor-status-dot" [style.background]="getStatusColor(SensorType.PHONE_USAGE)"></div>
+        </div>
+        <h3>Phone Usage</h3>
+        <p class="sensor-status-text">{{ getStatusLabel(SensorType.PHONE_USAGE) }}</p>
+        <div class="sensor-data" *ngIf="phoneUsage">
+          <div class="data-row">
+            <span class="data-label">Screen</span>
+            <span class="data-value">{{ phoneUsage.screenOn ? '📱 On' : '📴 Off' }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Call Active</span>
+            <span class="data-value">{{ phoneUsage.callActive ? '📞 Yes' : 'No' }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">App Usage</span>
+            <span class="data-value">{{ phoneUsage.appUsageMinutes }}min</span>
+          </div>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- EMA Section -->
+  <h2 class="section-title">EMA Interventions</h2>
+  <ion-card class="ema-section-card">
+    <ion-card-content>
+      <div class="ema-stats">
+        <div class="ema-stat">
+          <span class="ema-stat-value">{{ emaCountToday }}</span>
+          <span class="ema-stat-label">EMAs Today</span>
+        </div>
+        <div class="ema-stat">
+          <span class="ema-stat-value">3</span>
+          <span class="ema-stat-label">Max / Day</span>
+        </div>
+        <div class="ema-stat">
+          <span class="ema-stat-value">{{ totalEma }}</span>
+          <span class="ema-stat-label">Total Responses</span>
+        </div>
+      </div>
+
+      <div class="ema-buttons">
+        <ion-button size="small" fill="outline" color="warning" (click)="fireMorningEma()">
+          <ion-icon name="sunny-outline" slot="start"></ion-icon>
+          Morning
+        </ion-button>
+        <ion-button size="small" fill="outline" color="tertiary" (click)="fireContextEma()">
+          <ion-icon name="flash-outline" slot="start"></ion-icon>
+          Context
+        </ion-button>
+        <ion-button size="small" fill="outline" color="primary" (click)="fireEveningEma()">
+          <ion-icon name="moon-outline" slot="start"></ion-icon>
+          Evening
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Pending EMA Modal -->
+  <ion-card class="ema-prompt-card" *ngIf="pendingEma">
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="notifications-outline"></ion-icon>
+        {{ pendingEma.triggerSource === 'sensor_triggered' ? 'Sensor-Triggered' : 'Scheduled' }} EMA
+      </ion-card-subtitle>
+      <ion-card-title>{{ pendingEma.title }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p class="ema-question">{{ pendingEma.question }}</p>
+      <div class="ema-options">
+        <ion-button
+          *ngFor="let option of pendingEma.responseOptions"
+          size="small"
+          fill="outline"
+          (click)="submitEmaResponse(pendingEma.id, option)"
+        >
+          {{ option }}
+        </ion-button>
+      </div>
+      <ion-button size="small" fill="clear" color="medium" (click)="dismissEma()">
+        Dismiss
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Storage Stats -->
+  <h2 class="section-title">Data Storage</h2>
+  <ion-card>
+    <ion-card-content>
+      <div class="storage-stats">
+        <div class="storage-stat">
+          <ion-icon name="analytics-outline" color="primary"></ion-icon>
+          <div>
+            <strong>{{ totalReadings }}</strong>
+            <span>Sensor readings today</span>
+          </div>
+        </div>
+        <div class="storage-stat">
+          <ion-icon name="chatbox-ellipses-outline" color="secondary"></ion-icon>
+          <div>
+            <strong>{{ totalEma }}</strong>
+            <span>EMA responses total</span>
+          </div>
+        </div>
+      </div>
+      <ion-button expand="block" fill="outline" color="danger" size="small" (click)="clearAllData()">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        Clear All Stored Data
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <div style="height: 24px"></div>
+</ion-content>

@@ -32,6 +32,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/publications/publications.module').then(m => m.PublicationsPageModule)
   },
   {
+    path: 'sensor-dashboard',
+    loadChildren: () => import('./pages/sensor-dashboard/sensor-dashboard.module').then(m => m.SensorDashboardPageModule)
+  },
+  {
     path: 'contact',
     loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactPageModule)
   },
