@@ -1,0 +1,88 @@
+.warning-banner {
+  background-color: rgba(232, 168, 56, 0.15);
+  border-left: 4px solid #E8A838;
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  ion-icon {
+    font-size: 24px;
+    color: #E8A838;
+    margin-top: 2px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.4;
+    
+    strong {
+      color: #b57a16;
+      font-size: 14px;
+    }
+  }
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 24px 4px 12px;
+}
+
+.status-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    span {
+      color: #666;
+      font-size: 14px;
+    }
+
+    strong {
+      color: #333;
+      font-weight: 600;
+      
+      &.isolated {
+        color: #ef4444;
+      }
+    }
+  }
+}
+
+.intervention-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+  .message-input {
+    --background: #f9f9f9;
+    --border-radius: 8px;
+    margin-bottom: 16px;
+    
+    ion-label {
+      color: #666;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+  }
+
+  .send-btn {
+    --border-radius: 8px;
+    text-transform: none;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+}

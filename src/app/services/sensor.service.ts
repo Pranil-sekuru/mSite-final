@@ -216,9 +216,11 @@ export class SensorService {
             this.computeWindowFeatures();
           }
 
-          // Step detection: peak above dynamic threshold
-          const dynamicThreshold = 9.8 + 2.5; // gravity + walking spike
-          if (magnitude > dynamicThreshold && this.lastAccelMagnitude < dynamicThreshold) {
+          // Step detection: peak above threshold
+          // Note: iOS 'event.acceleration' is user-acceleration (gravity removed), so baseline is 0.0.
+          // We look for a sharp swing of at least 2.0 m/s² to qualify as a footstep.
+          const stepThreshold = 2.0; 
+          if (magnitude > stepThreshold && this.lastAccelMagnitude < stepThreshold && this.currentGait !== 'sedentary') {
             this.stepCount++;
           }
 
@@ -253,12 +255,10 @@ export class SensorService {
    * Features:
    *   variance      — spread of magnitudes; low when stationary
    *   peakCount     — number of magnitude spikes (proxy for steps/cadence)
-   *   meanMagnitude — close to 9.8 when stationary (gravity dominates)
    *
-   * Rules (tuned for smartphone held in hand / pocket):
-   *   sedentary : variance < 0.3  AND peakCount < 4
-   *   walking   : variance 0.3–3  OR  peakCount 4–12
-   *   running   : variance > 3    OR  peakCount > 12
+   * Rules (tuned for strict thresholding to ignore hand jitter):
+   *   walking   : variance > 2.0  AND  peakCount >= 4
+   *   running   : variance > 8.0  AND  peakCount >= 8
    */
   private computeWindowFeatures(): void {
     const n = this.accelBuffer.length;
@@ -268,9 +268,12 @@ export class SensorService {
     const variance = this.accelBuffer.reduce((sum, v) => sum + (v - mean) ** 2, 0) / n;
     this.windowVariance = variance;
 
-    // Peak count: local maxima above mean + 0.5*stddev threshold
+    // Peak count: local maxima above mean + dynamic threshold
+    // Using Math.max guarantees that tiny hand jitters (variance near 0) don't count as peaks.
+    // An absolute minimum of 1.0 m/s² swing above the mean is required.
     const stddev = Math.sqrt(variance);
-    const peakThreshold = mean + 0.5 * stddev;
+    const peakThreshold = mean + Math.max(1.0, 0.5 * stddev);
+    
     let peaks = 0;
     for (let i = 1; i < n - 1; i++) {
       if (
@@ -283,10 +286,10 @@ export class SensorService {
     }
     this.windowPeakCount = peaks;
 
-    // Gait classification
-    if (variance > 3.0 || peaks > 12) {
+    // Strict Gait classification
+    if (variance > 8.0 && peaks >= 8) {
       this.currentGait = 'running';
-    } else if (variance > 0.3 || peaks >= 4) {
+    } else if (variance > 2.0 && peaks >= 4) {
       this.currentGait = 'walking';
     } else {
       this.currentGait = 'sedentary';

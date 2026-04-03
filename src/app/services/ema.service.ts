@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { IsolationDetectorService } from './isolation-detector.service';
 import { DataStorageService } from './data-storage.service';
-import { EmaPrompt, EmaResponse, IsolationState } from '../models/sensor.models';
+import { EmaPrompt, EmaResponse, IsolationState, EnjoyableActivity } from '../models/sensor.models';
 
 @Injectable({ providedIn: 'root' })
 export class EmaService {
@@ -153,9 +153,37 @@ export class EmaService {
     this.pendingEmaSubject.next(prompt);
   }
 
+  // ── Custom / Therapist EMAs ──────────────────────────
+
+  triggerTherapistPrompt(message: string): void {
+    const prompt: EmaPrompt = {
+      id: this.generateId(),
+      type: 'therapist_custom',
+      title: 'Message from Therapist',
+      question: message,
+      responseOptions: ['Acknowledge', 'I need to talk'],
+      triggerSource: 'therapist',
+      timestamp: Date.now()
+    };
+    this.pendingEmaSubject.next(prompt);
+  }
+
+  triggerSavoringPrompt(activity: EnjoyableActivity): void {
+    const prompt: EmaPrompt = {
+      id: this.generateId(),
+      type: 'savoring_prompt',
+      title: 'Savoring the Moment',
+      question: `You just completed "${activity.title}". Take a moment to reflect on what you enjoyed about it.`,
+      responseOptions: [], // Indicates free-text input
+      triggerSource: 'activity_completion',
+      timestamp: Date.now()
+    };
+    this.pendingEmaSubject.next(prompt);
+  }
+
   // ── Submit Response ──────────────────────────────────
 
-  async submitResponse(promptId: string, response: string): Promise<void> {
+  async submitResponse(promptId: string, response: string, freeTextResponse?: string): Promise<void> {
     const pending = this.pendingEmaSubject.value;
     if (!pending || pending.id !== promptId) return;
 
@@ -164,7 +192,8 @@ export class EmaService {
       type: pending.type,
       response,
       responseTimestamp: Date.now(),
-      reactionTimeMs: Date.now() - pending.timestamp
+      reactionTimeMs: Date.now() - pending.timestamp,
+      freeTextResponse
     };
 
     await this.storage.saveEmaResponse(emaResponse);

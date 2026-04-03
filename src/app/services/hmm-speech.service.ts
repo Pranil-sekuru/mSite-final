@@ -28,7 +28,6 @@ export interface HmmResult {
 
 @Injectable({ providedIn: 'root' })
 export class HmmSpeechService implements OnDestroy {
-
   // ── HMM Parameters ──────────────────────────────────────────────────────
 
   /** Number of hidden states */
@@ -104,7 +103,7 @@ export class HmmSpeechService implements OnDestroy {
   private _isRunning = false;
   get isRunning(): boolean { return this._isRunning; }
 
-  constructor(private ngZone: NgZone) {}
+  constructor(private ngZone: NgZone) { }
 
   // ── Public API ───────────────────────────────────────────────────────────
 

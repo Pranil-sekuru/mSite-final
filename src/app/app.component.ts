@@ -13,7 +13,9 @@ export class AppComponent {
     { title: 'About mSITE', url: '/about', icon: 'information-circle-outline' },
     { title: 'How It Works', url: '/how-it-works', icon: 'layers-outline' },
     { title: 'The App', url: '/the-app', icon: 'phone-portrait-outline' },
+    { title: 'Clinical Goals', url: '/goals', icon: 'clipboard-outline' },
     { title: 'Sensor Dashboard', url: '/sensor-dashboard', icon: 'pulse-outline' },
+    { title: 'Therapist Portal', url: '/therapist-portal', icon: 'medkit-outline' },
     { title: 'Clinical Evidence', url: '/evidence', icon: 'bar-chart-outline' },
 
     { title: 'Contact', url: '/contact', icon: 'mail-outline' },

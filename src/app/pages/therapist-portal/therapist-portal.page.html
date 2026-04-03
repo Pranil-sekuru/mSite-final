@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Therapist Portal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  
+  <div class="warning-banner">
+    <ion-icon name="warning-outline"></ion-icon>
+    <p><strong>Clinical Simulation Mode</strong><br>This page simulates the clinician's dashboard. In production, this would be a secure web portal.</p>
+  </div>
+
+  <h2>Patient Status</h2>
+  
+  <ion-card class="status-card" *ngIf="isolationState">
+    <ion-card-content>
+      <div class="stat-row">
+        <span>Current State</span>
+        <strong [class.isolated]="isolationState.isolationScore > 0.6">
+          {{ isolationState.isolationScore > 0.6 ? 'High Isolation Risk' : 'Monitoring' }}
+        </strong>
+      </div>
+      <div class="stat-row">
+        <span>Isolation Score</span>
+        <strong>{{ isolationState.isolationScore | percent:'1.0-0' }}</strong>
+      </div>
+      <div class="stat-row">
+        <span>Physical Status</span>
+        <strong>{{ isolationState.isHome ? 'At Home' : 'Away' }}</strong>
+      </div>
+      <div class="stat-row">
+        <span>Last Conversation</span>
+        <strong>{{ isolationState.lastConversationMinutesAgo === Infinity ? 'None today' : isolationState.lastConversationMinutesAgo + ' minutes ago' }}</strong>
+      </div>
+      <div class="stat-row">
+        <span>Target HMM Context</span>
+        <strong>{{ isolationState.currentHmmState }}</strong>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="!isolationState">
+    <ion-card-content>
+      Waiting for sensor data pipeline...
+    </ion-card-content>
+  </ion-card>
+
+  <h2>Intervention Push</h2>
+  
+  <ion-card class="intervention-card">
+    <ion-card-header>
+      <ion-card-title>Send Custom EMA</ion-card-title>
+      <ion-card-subtitle>Push a real-time message directly to the patient's device</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item class="message-input">
+        <ion-label position="stacked">Clinical Message</ion-label>
+        <ion-textarea 
+          [(ngModel)]="customMessage" 
+          placeholder="e.g. I noticed you haven't been out much today. How are you holding up?"
+          rows="3">
+        </ion-textarea>
+      </ion-item>
+
+      <ion-button expand="block" class="send-btn" (click)="sendCustomEma()" [disabled]="!customMessage.trim()">
+        <ion-icon name="paper-plane-outline" slot="start"></ion-icon>
+        Push to Patient Device
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

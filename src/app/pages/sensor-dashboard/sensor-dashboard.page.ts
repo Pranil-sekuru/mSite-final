@@ -4,6 +4,8 @@ import { SensorService } from '../../services/sensor.service';
 import { IsolationDetectorService } from '../../services/isolation-detector.service';
 import { EmaService } from '../../services/ema.service';
 import { DataStorageService } from '../../services/data-storage.service';
+import { DbscanClusteringService } from '../../services/dbscan-clustering.service';
+import { ToastController } from '@ionic/angular';
 import {
   SensorType,
   SensorState,
@@ -61,7 +63,9 @@ export class SensorDashboardPage implements OnInit, OnDestroy {
     private sensorService: SensorService,
     private isolationDetector: IsolationDetectorService,
     private emaService: EmaService,
-    private storage: DataStorageService
+    private storage: DataStorageService,
+    private dbscan: DbscanClusteringService,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -89,6 +93,32 @@ export class SensorDashboardPage implements OnInit, OnDestroy {
 
   async setCurrentAsHome() {
     await this.sensorService.setCurrentLocationAsHome();
+    const toast = await this.toastCtrl.create({
+      message: 'Home location set successfully!',
+      duration: 2000,
+      color: 'success'
+    });
+    toast.present();
+  }
+
+  async runDbscanHomeDetection() {
+    const newHome = await this.dbscan.analyzeAndSetHome(100, 5); // 100m radius, min 5 points
+    if (newHome) {
+      const toast = await this.toastCtrl.create({
+        message: 'DBSCAN located your Home Geofence automatically!',
+        duration: 3000,
+        color: 'success',
+        icon: 'analytics-outline'
+      });
+      toast.present();
+    } else {
+      const toast = await this.toastCtrl.create({
+        message: 'Not enough GPS history to run DBSCAN clustering yet.',
+        duration: 3000,
+        color: 'warning'
+      });
+      toast.present();
+    }
   }
 
   // ── EMA Actions ──────────────────────────────────────
@@ -237,4 +267,5 @@ export class SensorDashboardPage implements OnInit, OnDestroy {
     this.totalReadings = stats.totalReadings;
     this.totalEma = stats.totalEma;
   }
+
 }

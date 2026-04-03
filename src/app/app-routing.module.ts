@@ -32,6 +32,14 @@ const routes: Routes = [
     path: 'contact',
     loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactPageModule)
   },
+  {
+    path: 'goals',
+    loadChildren: () => import('./pages/goals/goals.module').then( m => m.GoalsPageModule)
+  },
+  {
+    path: 'therapist-portal',
+    loadChildren: () => import('./pages/therapist-portal/therapist-portal.module').then( m => m.TherapistPortalPageModule)
+  },
 ];
 
 @NgModule({

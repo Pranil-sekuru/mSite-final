@@ -81,11 +81,11 @@ export interface SensorStatus {
 
 export interface EmaPrompt {
   id: string;
-  type: 'morning_goal' | 'context_aware' | 'evening_reflection';
+  type: 'morning_goal' | 'context_aware' | 'evening_reflection' | 'therapist_custom' | 'savoring_prompt';
   title: string;
   question: string;
   responseOptions: string[];
-  triggerSource: 'scheduled' | 'sensor_triggered';
+  triggerSource: 'scheduled' | 'sensor_triggered' | 'therapist' | 'activity_completion';
   timestamp: number;
   isolationState?: IsolationState;
 }
@@ -96,6 +96,25 @@ export interface EmaResponse {
   response: string;
   responseTimestamp: number;
   reactionTimeMs: number;
+  freeTextResponse?: string; // used for savoring notes
+}
+
+export interface Goal {
+  id: string;
+  title: string;
+  type: 'short_term' | 'long_term';
+  completed: boolean;
+  createdAt: number;
+}
+
+export interface EnjoyableActivity {
+  id: string;
+  title: string;
+  completed: boolean;
+  pleasureRating?: number; // 1-10
+  savoringNotes?: string;
+  createdAt: number;
+  completedAt?: number;
 }
 
 export interface HomeGeofence {

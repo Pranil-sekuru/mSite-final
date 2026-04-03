@@ -90,10 +90,16 @@
           <ion-icon name="navigate-outline"></ion-icon>
           <span>Waiting for GPS…</span>
         </div>
-        <ion-button *ngIf="location" size="small" fill="clear" (click)="setCurrentAsHome()">
-          <ion-icon name="home-outline" slot="start"></ion-icon>
-          Set as Home
-        </ion-button>
+        <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+          <ion-button *ngIf="location" size="small" fill="clear" (click)="setCurrentAsHome()">
+            <ion-icon name="home-outline" slot="start"></ion-icon>
+            Set as Home
+          </ion-button>
+          <ion-button size="small" fill="clear" color="secondary" (click)="runDbscanHomeDetection()">
+            <ion-icon name="analytics-outline" slot="start"></ion-icon>
+            Auto DBSCAN
+          </ion-button>
+        </div>
       </ion-card-content>
     </ion-card>
 

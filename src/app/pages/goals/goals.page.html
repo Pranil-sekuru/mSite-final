@@ -1,0 +1,85 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Clinical Goals</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="currentSegment">
+      <ion-segment-button value="goals">
+        <ion-label>Therapy Goals</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="activities">
+        <ion-label>Enjoyable Activities</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- =============================== -->
+  <!-- SEGMENT: GOALS                 -->
+  <!-- =============================== -->
+  <div *ngIf="currentSegment === 'goals'">
+    <div class="empty-state" *ngIf="goals.length === 0">
+      <ion-icon name="clipboard-outline"></ion-icon>
+      <p>No goals set yet. Break your exposure therapy down into small steps.</p>
+    </div>
+
+    <ion-list *ngIf="goals.length > 0" lines="full">
+      <ion-item *ngFor="let goal of goals" [class.completed]="goal.completed">
+        <ion-checkbox slot="start" [checked]="goal.completed" (ionChange)="toggleGoal(goal)"></ion-checkbox>
+        <ion-label>
+          <h2>{{ goal.title }}</h2>
+          <p>{{ goal.type === 'short_term' ? 'Short Term' : 'Long Term' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="promptAddGoal()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+  <!-- =============================== -->
+  <!-- SEGMENT: ENJOYABLE ACTIVITIES  -->
+  <!-- =============================== -->
+  <div *ngIf="currentSegment === 'activities'">
+    <div class="header-text">
+      <p>Plan small activities that bring you joy. When you complete one, rate your pleasure and take a moment to savor it.</p>
+    </div>
+
+    <div class="empty-state" *ngIf="activities.length === 0">
+      <ion-icon name="happy-outline"></ion-icon>
+      <p>No activities planned. What's something small you enjoy doing?</p>
+    </div>
+
+    <ion-list *ngIf="activities.length > 0" lines="full">
+      <ion-item *ngFor="let activity of activities" [class.completed]="activity.completed">
+        <ion-icon slot="start" name="leaf-outline" [color]="activity.completed ? 'success' : 'medium'"></ion-icon>
+        <ion-label>
+          <h2>{{ activity.title }}</h2>
+          <p *ngIf="!activity.completed">Tap to complete & rate</p>
+          <p *ngIf="activity.completed" class="rating-text">
+            Pleasure Rating: <strong>{{ activity.pleasureRating }}/10</strong>
+          </p>
+        </ion-label>
+        <ion-button *ngIf="!activity.completed" slot="end" fill="outline" size="small" (click)="completeActivityFlow(activity)">
+          Done
+        </ion-button>
+        <ion-icon *ngIf="activity.completed" slot="end" name="checkmark-circle" color="success"></ion-icon>
+      </ion-item>
+    </ion-list>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="tertiary" (click)="promptAddActivity()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+</ion-content>
