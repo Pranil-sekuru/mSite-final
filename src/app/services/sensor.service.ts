@@ -188,10 +188,13 @@ export class SensorService {
 
   private async startActivitySensing(): Promise<void> {
     try {
-      // Request permission (needed on iOS 13+)
-      try {
-        await (Motion as any).requestPermissions?.();
-      } catch { /* not all platforms require this */ }
+      // Request permission (needed on iOS 13+ WKWebView)
+      if (typeof (DeviceMotionEvent as any) !== 'undefined' && typeof (DeviceMotionEvent as any).requestPermission === 'function') {
+        const permissionState = await (DeviceMotionEvent as any).requestPermission();
+        if (permissionState !== 'granted') {
+            throw new Error('DeviceMotionEvent permission denied by user');
+        }
+      }
 
       this.updateStatus(SensorType.ACTIVITY, SensorState.ACTIVE);
 

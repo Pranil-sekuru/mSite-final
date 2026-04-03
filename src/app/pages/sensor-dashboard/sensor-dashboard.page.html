@@ -101,35 +101,42 @@
     <ion-card class="sensor-card">
       <ion-card-content>
         <div class="sensor-header">
-          <div class="sensor-icon-wrap" style="--sensor-accent: #1D9E75">
-            <ion-icon name="walk-outline"></ion-icon>
+          <div class="sensor-icon-wrap" [style.--sensor-accent]="getGaitColor()">
+            <ion-icon [name]="getGaitIcon()"></ion-icon>
           </div>
           <div class="sensor-status-dot" [style.background]="getStatusColor(SensorType.ACTIVITY)"></div>
         </div>
         <h3>Activity</h3>
-        <p class="sensor-status-text">{{ getStatusLabel(SensorType.ACTIVITY) }}</p>
+
+        <!-- Prominent gait state badge -->
+        <div class="gait-state-badge" *ngIf="activity" [style.background]="getGaitColor() + '22'" [style.border-color]="getGaitColor()">
+          <span class="gait-state-label" [style.color]="getGaitColor()">{{ getGaitLabel() }}</span>
+        </div>
+        <p class="sensor-status-text" *ngIf="!activity">{{ getStatusLabel(SensorType.ACTIVITY) }}</p>
+
         <div class="sensor-data" *ngIf="activity">
           <div class="data-row">
             <span class="data-label">Steps</span>
             <span class="data-value highlight">{{ activity.steps }}</span>
           </div>
           <div class="data-row">
-            <span class="data-label">Moving</span>
-            <span class="data-value">{{ activity.isMoving ? '🏃 Yes' : '🪑 No' }}</span>
-          </div>
-          <div class="data-row">
-            <span class="data-label">Intensity</span>
-            <span class="data-value">{{ activity.intensity }}</span>
-          </div>
-          <div class="data-row">
             <span class="data-label">Accel</span>
             <span class="data-value">{{ activity.accelerationMagnitude }}m/s²</span>
           </div>
+          <div class="data-row">
+            <span class="data-label">Variance</span>
+            <span class="data-value">{{ activity.windowVariance | number:'1.2-2' }}</span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Peaks</span>
+            <span class="data-value">{{ activity.peakCount }}/window</span>
+          </div>
         </div>
-        <!-- Mini sparkline bar chart -->
+
+        <!-- Live accel sparkline -->
         <div class="mini-chart" *ngIf="activityHistory.length > 0">
           <div class="bar" *ngFor="let val of activityHistory"
-            [style.height.%]="(val / 15) * 100"
+            [style.height.%]="Math.min((val / 15) * 100, 100)"
             [style.background]="val > 8 ? '#EF4444' : val > 3 ? '#E8A838' : '#1D9E75'">
           </div>
         </div>

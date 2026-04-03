@@ -52,9 +52,10 @@ export class SensorDashboardPage implements OnInit, OnDestroy {
 
   private subs: Subscription[] = [];
 
-  // Expose enums to template
+  // Expose enums and Math to template
   SensorType = SensorType;
   SensorState = SensorState;
+  Math = Math;
 
   constructor(
     private sensorService: SensorService,
@@ -161,6 +162,33 @@ export class SensorDashboardPage implements OnInit, OnDestroy {
     if (score >= 0.7) return 'High Isolation';
     if (score >= 0.4) return 'Moderate';
     return 'Low';
+  }
+
+  getGaitIcon(): string {
+    if (!this.activity) return 'body-outline';
+    switch (this.activity.gaitActivity) {
+      case 'running':  return 'fitness-outline';
+      case 'walking':  return 'walk-outline';
+      default:         return 'bed-outline';
+    }
+  }
+
+  getGaitColor(): string {
+    if (!this.activity) return '#999';
+    switch (this.activity.gaitActivity) {
+      case 'running':  return '#EF4444';
+      case 'walking':  return '#1D9E75';
+      default:         return '#8B9CB6';
+    }
+  }
+
+  getGaitLabel(): string {
+    if (!this.activity) return 'Waiting…';
+    switch (this.activity.gaitActivity) {
+      case 'running':  return '🏃 Running';
+      case 'walking':  return '🚶 Walking';
+      default:         return '🪑 Sedentary';
+    }
   }
 
   formatTime(timestamp: number | null): string {
