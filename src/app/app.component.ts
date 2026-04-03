@@ -15,8 +15,7 @@ export class AppComponent {
     { title: 'The App', url: '/the-app', icon: 'phone-portrait-outline' },
     { title: 'Sensor Dashboard', url: '/sensor-dashboard', icon: 'pulse-outline' },
     { title: 'Clinical Evidence', url: '/evidence', icon: 'bar-chart-outline' },
-    { title: 'Team', url: '/team', icon: 'people-outline' },
-    { title: 'Publications', url: '/publications', icon: 'document-text-outline' },
+
     { title: 'Contact', url: '/contact', icon: 'mail-outline' },
   ];
 

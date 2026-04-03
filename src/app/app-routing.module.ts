@@ -23,14 +23,7 @@ const routes: Routes = [
     path: 'evidence',
     loadChildren: () => import('./pages/evidence/evidence.module').then(m => m.EvidencePageModule)
   },
-  {
-    path: 'team',
-    loadChildren: () => import('./pages/team/team.module').then(m => m.TeamPageModule)
-  },
-  {
-    path: 'publications',
-    loadChildren: () => import('./pages/publications/publications.module').then(m => m.PublicationsPageModule)
-  },
+
   {
     path: 'sensor-dashboard',
     loadChildren: () => import('./pages/sensor-dashboard/sensor-dashboard.module').then(m => m.SensorDashboardPageModule)
